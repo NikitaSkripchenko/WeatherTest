@@ -14,7 +14,7 @@ struct WeatherModel: Codable {
     let message: Int?
     let cnt: Int?
     let list: [List]?
-    let city: City?
+    let city: City
 
     enum CodingKeys: String, CodingKey {
         case cod = "cod"
@@ -27,14 +27,14 @@ struct WeatherModel: Codable {
 
 // MARK: - City
 struct City: Codable {
-    let id: Int?
-    let name: String?
+    let id: Int
+    let name: String
     let coord: Coord?
-    let country: String?
-    let population: Int?
-    let timezone: Int?
-    let sunrise: Int?
-    let sunset: Int?
+    let country: String
+    let population: Int
+    let timezone: Int
+    let sunrise: Int
+    let sunset: Int
 
     enum CodingKeys: String, CodingKey {
         case id = "id"

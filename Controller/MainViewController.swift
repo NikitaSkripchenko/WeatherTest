@@ -11,18 +11,23 @@ import CoreLocation
 
 class MainViewController: UIViewController {
 
+    @IBOutlet weak var sunriseLabel: UILabel!
+    @IBOutlet weak var sunsetLabel: UILabel!
+    @IBOutlet weak var weatherIcon: UIImageView!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var weatherDescription: UILabel!
+    @IBOutlet weak var windLabel: UILabel!
     let locationManager = CLLocationManager()
 
     let router      = Router<WeatherEndPoint>()
     let repository  = Repository()
     
     var point : LocationPoint?
-    var units : Units = .imperial
+    var units : Units = .metric
     var language : LanguagesList = .en
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "London"
         setupLocationManager()
         
     }
@@ -30,11 +35,29 @@ class MainViewController: UIViewController {
     func getWeatherForecast() {
         repository.getSchedule(router: router, point: self.point!, units: units, language: language) { (weatherForecast, error) in
             if error == nil {
-                print(weatherForecast)
+                DispatchQueue.main.async {
+                    if let weather = weatherForecast {
+                        self.title = weather.city.name
+                        self.sunriseLabel.text = self.milisecondsToDateString(milisecond: weather.city.sunrise)
+                        self.sunsetLabel.text = self.milisecondsToDateString(milisecond: weather.city.sunset)
+                        self.temperatureLabel.text = "\((weather.list![0].main?.temp)!)°"
+                        self.weatherDescription.text = weather.list![0].weather![0].weatherDescription
+                        self.windLabel.text = "\(weather.list![0].wind!.speed ?? 0.0)"
+                    }
+                }
             }
         }
     }
 
+    func milisecondsToDateString(milisecond: Int) -> String {
+        let dateVar = Date.init(timeIntervalSinceNow: TimeInterval(milisecond)/1000)
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm"
+        let newDate = dateFormatter.string(from: dateVar)
+
+        return newDate
+    }
+    
     func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
