@@ -39,6 +39,8 @@ class MainViewController: UIViewController {
     var language : LanguagesList = .en
     
     var sections = [ForecastSection]()
+    
+    var spinner : UIView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,11 +49,11 @@ class MainViewController: UIViewController {
     }
 
     func getWeatherForecast() {
+        spinner = self.displaySpinner(onView: self.view)
         repository.getSchedule(router: router, point: self.point!, units: units, language: language) { (weatherForecast, error) in
             if error == nil {
                 DispatchQueue.main.async {
                     if let weather = weatherForecast {
-
                         var forecastModel = [ForecastModel]()
                         for i in weather.list {
                             let item = ForecastModel(icon: "icon", date: self.getDate(from: i.dtTxt), time: self.getTime(from: i.dtTxt), description: i.weather![0].weatherDescription!, temp: "\((i.main!.temp?.toInt())!)")
@@ -60,7 +62,6 @@ class MainViewController: UIViewController {
                         self.sections = ForecastSection.group(forecastItems: forecastModel)
                         self.sections.sort{ lhs, rhs in lhs.day < rhs.day}
                         self.weatherTable.reloadData()
-
                         
                         self.title = weather.city.name
                         self.sunriseLabel.text = self.milisecondsToDateString(milisecond: weather.city.sunrise)
@@ -68,6 +69,7 @@ class MainViewController: UIViewController {
                         self.temperatureLabel.text = "\(weather.list[0].main?.temp?.toInt() ?? 0) \(self.units.getTemperatureSign())"
                         self.weatherDescription.text = weather.list[0].weather![0].weatherDescription
                         self.windLabel.text = "\(weather.list[0].wind!.speed ?? 0.0) \(self.units.getDistanceSign())"
+                        self.removeSpinner(spinner: self.spinner!)
                     }
                 }
             }
@@ -75,11 +77,10 @@ class MainViewController: UIViewController {
     }
 
     func milisecondsToDateString(milisecond: Int) -> String {
-        let dateVar = Date.init(timeIntervalSinceNow: TimeInterval(milisecond)/1000)
+        let dateVar = Date.init(timeIntervalSinceNow: TimeInterval(milisecond))
         var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm"
+        dateFormatter.dateFormat = "hh:mm a"
         let newDate = dateFormatter.string(from: dateVar)
-
         return newDate
     }
     
@@ -96,14 +97,13 @@ class MainViewController: UIViewController {
         weatherTable.delegate = self
         weatherTable.register(UINib(nibName: "WeatherTableViewCell", bundle: nil),forCellReuseIdentifier: "WeatherTableViewCell")
     }
-    // "2020-03-19 15:00:00"
-    // yyyy-mm-dd HH:mm:ss
+
     private func getDay(date: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
         
         let dateFormatter_ = DateFormatter()
-        dateFormatter_.dateFormat = "yyyy-mm-dd"
+        dateFormatter_.dateFormat = "yyyy-MM-dd"
         let day = dateFormatter_.date(from: date)!
         let dayInWeek = dateFormatter.string(from: day)
         return dayInWeek
@@ -126,7 +126,7 @@ class MainViewController: UIViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         if let date = dateFormatter.date(from: str) {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm"
+            dateFormatter.dateFormat = "HH:mm a"
             let dateCut = dateFormatter.string(from: date)
             return dateCut
         }
@@ -170,6 +170,26 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource {
         return date
     }
 
+    private func displaySpinner(onView : UIView) -> UIView {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let activityIndicator = UIActivityIndicatorView.init(style: .gray)
+        activityIndicator.startAnimating()
+        activityIndicator.center = spinnerView.center
+
+        DispatchQueue.main.async {
+            spinnerView.addSubview(activityIndicator)
+            onView.addSubview(spinnerView)
+        }
+
+        return spinnerView
+    }
+    
+    private func removeSpinner(spinner :UIView) {
+        DispatchQueue.main.async {
+            spinner.removeFromSuperview()
+        }
+    }
     
 }
 
