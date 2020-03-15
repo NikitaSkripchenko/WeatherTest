@@ -120,7 +120,7 @@
                     <navigationItem key="navigationItem" id="VAQ-qK-LDX">
                         <barButtonItem key="rightBarButtonItem" title="Settings" id="fGS-QA-zIs">
                             <connections>
-                                <segue destination="Z02-yO-vgP" kind="show" id="CZT-am-JlM"/>
+                                <action selector="goToSettings:" destination="BYZ-38-t0r" id="nyX-4P-Q3S"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -141,15 +141,15 @@
         <!--Settings View Controller-->
         <scene sceneID="6IZ-fW-mcA">
             <objects>
-                <viewController id="Z02-yO-vgP" customClass="SettingsViewController" customModule="WeatherTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Z02-yO-vgP" customClass="SettingsViewController" customModule="WeatherTest" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ydg-Vn-6Wo">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="om4-xD-0Gc">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <connections>
-                                    <segue destination="q5s-BU-d8o" kind="embed" id="Gk1-1C-X3Z"/>
+                                    <segue destination="q5s-BU-d8o" kind="embed" identifier="showTable" id="Gk1-1C-X3Z"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -203,7 +203,7 @@
             <objects>
                 <tableViewController id="q5s-BU-d8o" customClass="SettingsTableViewController" customModule="WeatherTest" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vXa-kV-iQ8">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <sections>
@@ -222,6 +222,9 @@
                                                         <segment title="Metric"/>
                                                         <segment title="Imperial"/>
                                                     </segments>
+                                                    <connections>
+                                                        <action selector="segmentControlChanged:" destination="q5s-BU-d8o" eventType="valueChanged" id="Cem-AR-zXM"/>
+                                                    </connections>
                                                 </segmentedControl>
                                             </subviews>
                                             <constraints>
@@ -261,10 +264,14 @@
                             <outlet property="delegate" destination="q5s-BU-d8o" id="VhP-OO-Ip7"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="languageSelected" destination="Bcy-bc-YrC" id="Wsm-eM-LQV"/>
+                        <outlet property="metricSystemControl" destination="nib-r2-RnN" id="etx-z2-XFl"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e3V-9Y-nO9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2943" y="127"/>
+            <point key="canvasLocation" x="2778" y="127"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="su6-tq-YY3">

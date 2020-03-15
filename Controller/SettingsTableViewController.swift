@@ -10,17 +10,40 @@ import UIKit
 
 
 class SettingsTableViewController: UITableViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.tableFooterView = UIView()
-         self.clearsSelectionOnViewWillAppear = false
-    }
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+
+    weak var unitsDelegate : UnitsDelegate?
+
+    @IBOutlet weak var languageSelected: UILabel!
+    @IBOutlet weak var metricSystemControl: UISegmentedControl!
+
+    @IBAction func segmentControlChanged(_ sender: Any) {
+        switch metricSystemControl.selectedSegmentIndex {
+        case 0:
+            units = .metric
+        default: //1
+            units = .imperial
+        }
+        unitsDelegate?.change(for: units)
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    var language : String!
+    var units : Units!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupData()
+        tableView.tableFooterView = UIView()
+        self.clearsSelectionOnViewWillAppear = false
+    }
+    
+    func setupData() {
+        languageSelected.text = language
+        switch units {
+        case .imperial:
+            metricSystemControl.selectedSegmentIndex = 1
+        default:
+            metricSystemControl.selectedSegmentIndex = 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

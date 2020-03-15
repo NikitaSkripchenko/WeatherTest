@@ -10,12 +10,25 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    @IBOutlet weak var settingsTableView: UITableView!
+    weak var embededTable  : SettingsTableViewController?
+    weak var unitsDelegate : UnitsDelegate?
+
+    var selectedLanguage  : String!
+    var selectedUnits     : Units!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
     }
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "showTable") {
+            
+            let detailScene = segue.destination as! SettingsTableViewController
+            self.embededTable = detailScene
+            self.embededTable?.language = selectedLanguage
+            self.embededTable?.units = selectedUnits
+            self.embededTable?.unitsDelegate = self.unitsDelegate
+        }
+    }
 }
 

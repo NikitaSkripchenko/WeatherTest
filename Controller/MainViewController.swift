@@ -19,6 +19,15 @@ class MainViewController: UIViewController {
     @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var weatherTable: UITableView!
 
+    @IBAction func goToSettings(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let settingsViewController = storyboard.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        settingsViewController.selectedLanguage = self.language.rawValue
+        settingsViewController.selectedUnits = self.units
+        settingsViewController.unitsDelegate = self
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
     let locationManager = CLLocationManager()
 
     let router      = Router<WeatherEndPoint>()
@@ -181,4 +190,15 @@ struct ForecastModel {
     let time : String
     let description : String
     let temp : String
+}
+
+protocol UnitsDelegate : class {
+    func change(for new: Units)
+}
+
+extension MainViewController : UnitsDelegate {
+    func change(for new: Units) {
+        self.units = new
+        self.getWeatherForecast()
+    }
 }
