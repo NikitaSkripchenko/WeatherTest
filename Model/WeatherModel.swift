@@ -13,7 +13,7 @@ struct WeatherModel: Codable {
     let cod: String?
     let message: Int?
     let cnt: Int?
-    let list: [List]?
+    let list: [List]
     let city: City
 
     enum CodingKeys: String, CodingKey {
@@ -67,7 +67,7 @@ struct List: Codable {
     let clouds: Clouds?
     let wind: Wind?
     let sys: Sys?
-    let dtTxt: String?
+    let dtTxt: String
     let rain: Rain?
 
     enum CodingKeys: String, CodingKey {
@@ -171,3 +171,12 @@ struct Wind: Codable {
     }
 }
 
+extension Double {
+    func toInt() -> Int? {
+        if self >= Double(Int.min) && self < Double(Int.max) {
+            return Int(self)
+        } else {
+            return nil
+        }
+    }
+}

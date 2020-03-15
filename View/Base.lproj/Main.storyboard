@@ -96,9 +96,9 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wNA-CR-J2E">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="wNA-CR-J2E">
                                 <rect key="frame" x="0.0" y="260" width="414" height="636"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -130,6 +130,7 @@
                         <outlet property="temperatureLabel" destination="oP8-6b-Gcq" id="F3x-qG-Wya"/>
                         <outlet property="weatherDescription" destination="cmG-hB-eif" id="RDa-zh-g7R"/>
                         <outlet property="weatherIcon" destination="MsD-N3-8bS" id="6eA-kZ-SIK"/>
+                        <outlet property="weatherTable" destination="wNA-CR-J2E" id="qPf-iz-gem"/>
                         <outlet property="windLabel" destination="6Ah-oW-Nbs" id="yuH-02-1OV"/>
                     </connections>
                 </viewController>
@@ -219,7 +220,7 @@
                                                     <rect key="frame" x="16" y="8" width="382" height="29"/>
                                                     <segments>
                                                         <segment title="Metric"/>
-                                                        <segment title="Second"/>
+                                                        <segment title="Imperial"/>
                                                     </segments>
                                                 </segmentedControl>
                                             </subviews>

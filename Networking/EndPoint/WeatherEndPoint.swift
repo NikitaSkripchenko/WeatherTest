@@ -54,18 +54,3 @@ extension WeatherEndPoint : EndPointType {
     }
 }
 
-
-public struct LocationPoint {
-    let longitude : String
-    let latitude : String
-}
-
-public enum Units : String {
-    case imperial
-    case metric
-}
-
-public enum LanguagesList : String {
-    case ru = "Russian"
-    case en = "English"
-}
