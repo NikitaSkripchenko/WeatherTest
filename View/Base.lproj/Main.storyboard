@@ -176,12 +176,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OYN-XX-968">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="OYN-XX-968">
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="OYN-XX-968" firstAttribute="leading" secondItem="fnA-hs-Tdh" secondAttribute="leading" id="6aR-4T-7g9"/>
                             <constraint firstAttribute="bottom" secondItem="OYN-XX-968" secondAttribute="bottom" id="JR5-ZU-aVB"/>
@@ -265,8 +265,8 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="languageSelected" destination="Bcy-bc-YrC" id="Wsm-eM-LQV"/>
                         <outlet property="metricSystemControl" destination="nib-r2-RnN" id="etx-z2-XFl"/>
+                        <outlet property="selectedLanguageLabel" destination="Bcy-bc-YrC" id="Wsm-eM-LQV"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e3V-9Y-nO9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

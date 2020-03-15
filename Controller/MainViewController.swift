@@ -22,9 +22,10 @@ class MainViewController: UIViewController {
     @IBAction func goToSettings(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let settingsViewController = storyboard.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
-        settingsViewController.selectedLanguage = self.language.rawValue
+        settingsViewController.selectedLanguage = self.language
         settingsViewController.selectedUnits = self.units
         settingsViewController.unitsDelegate = self
+        settingsViewController.languageDelegate = self
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
@@ -199,6 +200,17 @@ protocol UnitsDelegate : class {
 extension MainViewController : UnitsDelegate {
     func change(for new: Units) {
         self.units = new
+        self.getWeatherForecast()
+    }
+}
+
+protocol LanguageDelegate : class {
+    func change(for new : LanguagesList)
+}
+
+extension MainViewController : LanguageDelegate {
+    func change(for new: LanguagesList) {
+        self.language = new
         self.getWeatherForecast()
     }
 }

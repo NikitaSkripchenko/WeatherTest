@@ -36,7 +36,15 @@ public enum Units : String {
     }
 }
 
-public enum LanguagesList : String {
+public enum LanguagesList : String, CaseIterable {
     case ru = "Russian"
     case en = "English"
+    
+    init?(id : Int) {
+        switch id {
+        case 1: self = .ru
+        case 2: self = .en
+        default: return nil
+        }
+    }
 }

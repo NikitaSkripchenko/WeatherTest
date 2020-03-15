@@ -10,10 +10,11 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    weak var embededTable  : SettingsTableViewController?
-    weak var unitsDelegate : UnitsDelegate?
+    weak var embededTable     : SettingsTableViewController?
+    weak var unitsDelegate    : UnitsDelegate?
+    weak var languageDelegate : LanguageDelegate?
 
-    var selectedLanguage  : String!
+    var selectedLanguage  : LanguagesList!
     var selectedUnits     : Units!
 
     override func viewDidLoad() {
@@ -28,6 +29,7 @@ class SettingsViewController: UIViewController {
             self.embededTable?.language = selectedLanguage
             self.embededTable?.units = selectedUnits
             self.embededTable?.unitsDelegate = self.unitsDelegate
+            self.embededTable?.languageDelegate = self.languageDelegate
         }
     }
 }

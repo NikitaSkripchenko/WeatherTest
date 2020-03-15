@@ -11,9 +11,10 @@ import UIKit
 
 class SettingsTableViewController: UITableViewController {
 
-    weak var unitsDelegate : UnitsDelegate?
+    weak var unitsDelegate    : UnitsDelegate?
+    weak var languageDelegate : LanguageDelegate?
 
-    @IBOutlet weak var languageSelected: UILabel!
+    @IBOutlet weak var selectedLanguageLabel: UILabel!
     @IBOutlet weak var metricSystemControl: UISegmentedControl!
 
     @IBAction func segmentControlChanged(_ sender: Any) {
@@ -26,7 +27,7 @@ class SettingsTableViewController: UITableViewController {
         unitsDelegate?.change(for: units)
     }
 
-    var language : String!
+    var language : LanguagesList!
     var units : Units!
 
     override func viewDidLoad() {
@@ -37,7 +38,7 @@ class SettingsTableViewController: UITableViewController {
     }
     
     func setupData() {
-        languageSelected.text = language
+        selectedLanguageLabel.text = language.rawValue
         switch units {
         case .imperial:
             metricSystemControl.selectedSegmentIndex = 1
@@ -48,13 +49,11 @@ class SettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let selectLanguageViewController = storyboard.instantiateViewController(withIdentifier: "LanguagesViewController") as! LanguagesViewController
-            
+            selectLanguageViewController.selectedLanguage = self.language
+            selectLanguageViewController.languageDelegate = self.languageDelegate
             self.navigationController?.pushViewController(selectLanguageViewController, animated: true)
-            
         }
     }
-    
 }
