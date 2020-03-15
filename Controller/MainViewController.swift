@@ -56,12 +56,19 @@ class MainViewController: UIViewController {
                     if let weather = weatherForecast {
                         var forecastModel = [ForecastModel]()
                         for i in weather.list {
-                            let item = ForecastModel(icon: "icon", date: self.getDate(from: i.dtTxt), time: self.getTime(from: i.dtTxt), description: i.weather![0].weatherDescription!, temp: "\((i.main!.temp?.toInt())!)")
+                            let item = ForecastModel(icon: i.weather![0].icon!, date: self.getDate(from: i.dtTxt), time: self.getTime(from: i.dtTxt), description: i.weather![0].weatherDescription!, temp: "\((i.main!.temp?.toInt())!)")
                             forecastModel.append(item)
                         }
                         self.sections = ForecastSection.group(forecastItems: forecastModel)
                         self.sections.sort{ lhs, rhs in lhs.day < rhs.day}
                         self.weatherTable.reloadData()
+
+                        let imageUrl = Constants.imageUrl + weather.list[0].weather![0].icon! + ".png"
+                        if let url = URL(string: imageUrl) {
+                            self.downloadImage(from: url) { data in
+                                self.weatherIcon.image = UIImage(data: data)
+                            }
+                        }
                         
                         self.title = weather.city.name
                         self.sunriseLabel.text = self.milisecondsToDateString(milisecond: weather.city.sunrise)
@@ -76,6 +83,22 @@ class MainViewController: UIViewController {
         }
     }
 
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+
+    func downloadImage(from url: URL, success : @escaping (_ data: Data) -> Void) {
+        print("Download Started")
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            DispatchQueue.main.async() {
+                success(data)
+            }
+        }
+    }
+    
     func milisecondsToDateString(milisecond: Int) -> String {
         let dateVar = Date.init(timeIntervalSinceNow: TimeInterval(milisecond))
         var dateFormatter = DateFormatter()
@@ -162,6 +185,14 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource {
         cell.conditionDescriptionLabel?.text = headline.description
         cell.tempLabel?.text = headline.temp
         cell.unitsLabel?.text = units.getTemperatureSign()
+
+        let imageUrl = Constants.imageUrl + headline.icon + ".png"
+        if let url = URL(string: imageUrl) {
+            self.downloadImage(from: url) { data in
+                cell.conditionImage.image = UIImage(data: data)
+            }
+        }
+        
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
