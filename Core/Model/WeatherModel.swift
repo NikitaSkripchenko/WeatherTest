@@ -7,6 +7,17 @@
 //
 
 import Foundation
+import UIKit
+
+struct ForecastModel: Identifiable {
+    var id: ObjectIdentifier = ObjectIdentifier(Int.self)
+    
+    let icon : String
+    let date : String
+    let time : String?
+    let description : String
+    let temp : String?
+}
 
 // MARK: - WeatherModel
 struct WeatherModel: Codable {
@@ -15,7 +26,15 @@ struct WeatherModel: Codable {
     let cnt: Int?
     let list: [List]
     let city: City
-
+    
+    init(city: City = City()) {
+        self.city = city
+        self.cod = nil
+        self.message = nil
+        self.cnt = nil
+        self.list = [List(dt: nil, main: nil, weather: nil, clouds: nil, wind:  nil, sys:  nil, dtTxt: "nil", rain: nil)]
+    }
+    
     enum CodingKeys: String, CodingKey {
         case cod = "cod"
         case message = "message"
@@ -35,7 +54,18 @@ struct City: Codable {
     let timezone: Int
     let sunrise: Int
     let sunset: Int
-
+    
+    init(name: String = "London", id: Int = 1) {
+        self.name = name
+        self.id = id
+        self.coord = nil
+        self.country = ""
+        self.population = 0
+        self.timezone = 0
+        self.sunrise = 0
+        self.sunset = 0
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"

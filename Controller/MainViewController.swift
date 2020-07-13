@@ -236,13 +236,7 @@ struct ForecastSection {
     }
 }
 
-struct ForecastModel {
-    let icon : String
-    let date : String
-    let time : String
-    let description : String
-    let temp : String
-}
+
 
 protocol UnitsDelegate : class {
     func change(for new: Units)
